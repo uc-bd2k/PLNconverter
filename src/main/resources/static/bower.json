@@ -1,0 +1,26 @@
+{
+  "name": "Pln",
+  "version": "0.0.0",
+  "authors": [
+    "sajmmon <e7UaNvGTqEGL>"
+  ],
+  "description": "User interface to convert with PLN",
+  "main": "",
+  "moduleType": [],
+  "keywords": [
+    "proteomics"
+  ],
+  "license": "MIT",
+  "homepage": "eh3.uc.edu/pln",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.7",
+    "bootstrap": "~3.3.5"
+  }
+}

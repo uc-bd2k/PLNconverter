@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="plnApplication">
+<meta charset="UTF-8">
+<title>PLN converter</title>
+
+<head>
+
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+
+    <!-- Custom  CSS -->
+    <link rel="stylesheet" href="css/custom.css">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon"
+          href="http://www.lincs-dcic.org/images/dcic-logo/favicon.png?v=2"/>
+</head>
+
+<body>
+<div ng-controller="MainCtrl as mainCtrl">
+    <nav class="navbar navbar-default navbar-static-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" style="color:#337AB7;" href="#/">PLN Converter</a>
+            </div>
+
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                </ul>
+                <ul class="nav navbar-nav col-sm-5">
+
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="https://github.com/sajmmon/Pln" target="_blank">GitHub</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+    </nav>
+
+    <div class="container">
+        <h3> About</h3>
+        <hr/>
+        <div class="bs-callout bs-callout-primary">
+            <p>Protein Line Notation (PLN) is a notation that encodes “protein forms” as a linear string of
+                characters. A protein form is a “splice isoform, mutation variant and co- or post-translationally
+                modified form (and combinations thereof) that can arise from translation from [a] gene,” as defined by
+                the PRO ontology (Natale 2011). It is based on the open-world assumption and can encode both positive
+                and negative information.</p>
+        </div>
+
+    </div>
+
+    <div class="container">
+
+        <h3> User interface</h3>
+        <hr/>
+
+        <div class="form-group col-sm-4">
+            <label for="input">Enter peptides:</label>
+            <textarea class="form-control" rows="4" id="input"></textarea>
+        </div>
+
+        <div class="form-group col-sm-3 col-sm-offset-1">
+            <label>Select input format:</label>
+
+            <div class="radio">
+                <label><input type="radio" name="optradio">Option 1</label>
+            </div>
+            <div class="radio">
+                <label><input type="radio" name="optradio">Option 2</label>
+            </div>
+            <div class="radio disabled">
+                <label><input type="radio" name="optradio">Option 3</label>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-3 col-sm-offset-1">
+            <label>Select output format:</label>
+
+            <div class="radio">
+                <label><input type="radio" name="optradio">JSON</label>
+            </div>
+            <div class="radio">
+                <label><input type="radio" name="optradio">TXT</label>
+            </div>
+            <div class="radio disabled">
+                <label><input type="radio" name="optradio">CSV</label>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="col-sm-offset-10">
+            <button>Submit</button>
+        </div>
+    </div>
+
+
+
+    <div class="container">
+        <h3> References</h3>
+        <hr/>
+
+        <div class="bs-callout bs-callout-default">
+            <p>Natale, D. A., Arighi, C. N., Barker, W. C., Blake, J. A., Bult, C. J., Caudy, M., … Wu, C. H. (2011).
+                The Protein Ontology: a structured representation of protein forms and complexes. Nucleic Acids
+                Research, 39(Database issue), D539–D545. doi:10.1093/nar/gkq907.</p>
+        </div>
+        <!--<table class="table table-bordered">-->
+        <!--<thead style="background: #D9EDF7">-->
+        <!--<tr>-->
+        <!--<th class="col-md-1">Method</th>-->
+        <!--<th class="col-md-4">URL</th>-->
+        <!--<th class="col-md-2">Parameters</th>-->
+        <!--<th class="col-md-5">Description</th>-->
+        <!--</tr>-->
+        <!--</thead>-->
+        <!--<tbody>-->
+
+        <!--<tr>-->
+        <!--<td><code>GET</code></td>-->
+        <!--<td><b>api/convert/</b>{peptide}</td>-->
+        <!--<td>peptide name</td>-->
+        <!--<td>Returns a list of results</td>-->
+        <!--</tr>-->
+        <!--</tbody>-->
+        <!--</table>-->
+    </div>
+</div>
+
+<footer class="footer">
+
+    <div class="container">
+        <p class="text-muted" style="padding-top:5px; text-align: right;">Developed within NIH funded <a
+                href="http://lincsproject.org" target="_blank">LINCS Project</a></p>
+    </div>
+
+    <!-- AngularJS -->
+    <script src="bower_components/angular/angular.min.js"></script>
+
+    <!-- piLINCS Angular -->
+    <script src="js/app.js"></script>
+    <script src="js/controllers.js"></script>
+
+</footer>
+
+</body>
+</html>

@@ -1,5 +1,6 @@
 package edu.uc.eh.service;
 
+import edu.uc.eh.utils.NetworkUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -16,12 +17,21 @@ public class PrositeService {
 
     private static final Logger log = LoggerFactory.getLogger(PrositeService.class);
 
-    public List<String> getTable(String peptide) {
-        ArrayList<String> output = new ArrayList<>();
-        output.add("Output1");
-        output.add("Output2");
-        output.add("Output3");
+    public String getTable(String peptide) {
 
-        return output;
+        String response = "Prosite API did not respond.";
+        String prositeUrl = String.format("http://prosite.expasy.org/cgi-bin/prosite/PSScan.cgi?sig=%s&lineage=9606&db=sp&output=json",peptide);
+
+        log.info("Querying: " + prositeUrl);
+
+        try {
+            response = NetworkUtils.readUrl(prositeUrl);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        log.info("Response: " + response);
+        return response;
     }
 }

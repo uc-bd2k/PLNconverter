@@ -20,7 +20,7 @@
 </head>
 
 <body>
-<div ng-controller="MainCtrl as mainCtrl">
+<div ng-controller="MainCtrl as ctrl">
     <nav class="navbar navbar-default navbar-static-top">
         <div class="container">
             <div class="navbar-header">
@@ -41,7 +41,7 @@
 
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="https://github.com/sajmmon/Pln" target="_blank">GitHub</a></li>
+                    <li><a href="https://github.com/sajmmon/PLNconverter" target="_blank">GitHub</a></li>
                 </ul>
 
             </div>
@@ -67,18 +67,20 @@
         <h3> User interface</h3>
         <hr/>
 
-        <div class="form-group col-sm-4">
-            <label for="input">Enter peptides:</label>
-            <textarea class="form-control" rows="4" id="input"></textarea>
+        <div class="form-group col-sm-4" style="padding-left: 0px;">
+            <label for="input">Enter one motif:</label>
+            <textarea class="form-control" rows="1" id="input" ng-model="ctrl.textArea"></textarea>
+            <!--<hr/>--><br/>
+            Warning: demo works only with valid motifs e.g. TPKDSPGIPPSANAHQLFR or IYQYIQSR
         </div>
 
         <div class="form-group col-sm-3 col-sm-offset-1">
-            <label>Select input format:</label>
+            <label>Select input format: <br/>(not implemented)</label>
 
-            <div class="radio">
+            <div class="radio disabled">
                 <label><input type="radio" name="optradio">Option 1</label>
             </div>
-            <div class="radio">
+            <div class="radio disabled">
                 <label><input type="radio" name="optradio">Option 2</label>
             </div>
             <div class="radio disabled">
@@ -87,12 +89,12 @@
         </div>
 
         <div class="form-group col-sm-3 col-sm-offset-1">
-            <label>Select output format:</label>
+            <label>Select output format:<br/> (not implemented)</label>
 
-            <div class="radio">
+            <div class="radio disabled">
                 <label><input type="radio" name="optradio">JSON</label>
             </div>
-            <div class="radio">
+            <div class="radio disabled">
                 <label><input type="radio" name="optradio">TXT</label>
             </div>
             <div class="radio disabled">
@@ -102,13 +104,21 @@
     </div>
     <div class="container">
         <div class="col-sm-offset-10">
-            <button>Submit</button>
+            <button ng-click="ctrl.onSubmit()">Submit</button>
         </div>
     </div>
+<div class="container">API query for specified input: <a ng-href="/pln/api/convert/{{ctrl.textArea}}" target="_blank">/api/convert/{{ctrl.textArea}}</a></div>
+<div class="container" ng-show="ctrl.showOutput">
+    <hr/>
+    <strong>Parsed motif: </strong> {{ctrl.textArea}}<br/><br/>
+    <strong>Output (wait 1-2 mins): </strong>
+    <!--<div ng-show="ctrl.showInstruction">You need to click Submit</div>-->
+        <span class="glyphicon glyphicon-refresh glyphicon-spin" ng-show="ctrl.waiting"></span>
 
+    <pre>{{ctrl.response}}</pre>
+</div>
 
-
-    <div class="container">
+    <div class="container" style="padding-top: 40px;">
         <h3> References</h3>
         <hr/>
 
@@ -117,25 +127,6 @@
                 The Protein Ontology: a structured representation of protein forms and complexes. Nucleic Acids
                 Research, 39(Database issue), D539–D545. doi:10.1093/nar/gkq907.</p>
         </div>
-        <!--<table class="table table-bordered">-->
-        <!--<thead style="background: #D9EDF7">-->
-        <!--<tr>-->
-        <!--<th class="col-md-1">Method</th>-->
-        <!--<th class="col-md-4">URL</th>-->
-        <!--<th class="col-md-2">Parameters</th>-->
-        <!--<th class="col-md-5">Description</th>-->
-        <!--</tr>-->
-        <!--</thead>-->
-        <!--<tbody>-->
-
-        <!--<tr>-->
-        <!--<td><code>GET</code></td>-->
-        <!--<td><b>api/convert/</b>{peptide}</td>-->
-        <!--<td>peptide name</td>-->
-        <!--<td>Returns a list of results</td>-->
-        <!--</tr>-->
-        <!--</tbody>-->
-        <!--</table>-->
     </div>
 </div>
 
@@ -148,6 +139,10 @@
 
     <!-- AngularJS -->
     <script src="bower_components/angular/angular.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
     <!-- piLINCS Angular -->
     <script src="js/app.js"></script>

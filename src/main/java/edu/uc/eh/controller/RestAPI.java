@@ -32,7 +32,7 @@ public class RestAPI {
     @RequestMapping(value = "api/convert/{peptide}", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<String> convertToPLN(@PathVariable String peptide) {
+    String convertToPLN(@PathVariable String peptide) {
         log.info(String.format("Run convertToPLN with argument: %s", peptide));
 
         return prositeService.getTable(peptide);

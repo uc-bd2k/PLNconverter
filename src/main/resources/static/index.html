@@ -64,59 +64,128 @@
 
     <div class="container">
 
-        <h3> User interface</h3>
+        <h3> Convert</h3>
         <hr/>
 
         <div class="form-group col-sm-4" style="padding-left: 0px;">
-            <label for="input">Enter one motif:</label>
+            <label for="input">Enter one peptide:</label><br/><br/>
             <textarea class="form-control" rows="1" id="input" ng-model="ctrl.textArea"></textarea>
             <!--<hr/>--><br/>
-            Warning: demo works only with valid motifs e.g. TPKDSPGIPPSANAHQLFR or IYQYIQSR
+            Parsed modification: {{ctrl.modification}}<br/>
+            Parsed motif: {{ctrl.motif}}
         </div>
 
         <div class="form-group col-sm-3 col-sm-offset-1">
-            <label>Select input format: <br/>(not implemented)</label>
+            <label>Detected modification: <br/></label>
+            <br/><br/>
 
-            <div class="radio disabled">
-                <label><input type="radio" name="optradio">Option 1</label>
+            <div>
+                Phosphorylation: {{ctrl.isPhosphorylation}}
             </div>
-            <div class="radio disabled">
-                <label><input type="radio" name="optradio">Option 2</label>
+            <br/>
+
+            <div>
+                Splice isoform: <i>-</i>
             </div>
-            <div class="radio disabled">
-                <label><input type="radio" name="optradio">Option 3</label>
+            <br/>
+
+            <div>
+                Mutation variant: <i>-</i>
             </div>
+
         </div>
 
         <div class="form-group col-sm-3 col-sm-offset-1">
-            <label>Select output format:<br/> (not implemented)</label>
+            <label>Examples of peptides:</label><br/><br/>
 
-            <div class="radio disabled">
-                <label><input type="radio" name="optradio">JSON</label>
+            <div>
+                TPKDS[+80]PGIPPSANAHQLFR <a ng-href="#"
+                                            ng-click="ctrl.updateTextArea('TPKDS[+80]PGIPPSANAHQLFR')">use</a>
             </div>
-            <div class="radio disabled">
-                <label><input type="radio" name="optradio">TXT</label>
+            <br/>
+
+            <div>
+                RNS[+80]SEASSGDFLDLK <a ng-href="#" ng-click="ctrl.updateTextArea('RNS[+80]SEASSGDFLDLK')">use</a>
             </div>
-            <div class="radio disabled">
-                <label><input type="radio" name="optradio">CSV</label>
+            <br/>
+
+            <div>
+                LPLVPES[+80]PRR <a ng-href="#" ng-click="ctrl.updateTextArea('LPLVPES[+80]PRR')">use</a>
             </div>
         </div>
     </div>
+
     <div class="container">
-        <div class="col-sm-offset-10">
-            <button ng-click="ctrl.onSubmit()">Submit</button>
+        <hr/>
+        <h4> Submit to ProSite</h4>
+
+        <p>Prosite REST API responds within 30 - 60 seconds.</p><br/>
+
+        <div class="col-sm-offset-0">
+            <button class="btn btn-default" ng-click="ctrl.onSubmit('table')">Display as Table</button>
+            <!--&nbsp;-->
+            <!--<button class="btn btn-default" ng-click="ctrl.onSubmit('csv')">Display as CSV</button>-->
+
+            &nbsp; &nbsp; &nbsp; or display as JSON via API query: <a ng-href="/pln/api/convert/{{ctrl.motif}}"
+                                                                      target="_blank">/api/convert/{{ctrl.motif}}</a>
         </div>
     </div>
-<div class="container">API query for specified input: <a ng-href="/pln/api/convert/{{ctrl.textArea}}" target="_blank">/api/convert/{{ctrl.textArea}}</a></div>
-<div class="container" ng-show="ctrl.showOutput">
-    <hr/>
-    <strong>Parsed motif: </strong> {{ctrl.textArea}}<br/><br/>
-    <strong>Output (wait 1-2 mins): </strong>
-    <!--<div ng-show="ctrl.showInstruction">You need to click Submit</div>-->
+
+    <div class="container" ng-show="ctrl.showOutput">
+        <hr/>
+        <strong>Table </strong>
+        <!--<div ng-show="ctrl.showInstruction">You need to click Submit</div>-->
         <span class="glyphicon glyphicon-refresh glyphicon-spin" ng-show="ctrl.waiting"></span>
 
-    <pre>{{ctrl.response}}</pre>
-</div>
+        <div class="well" ng-show="true">
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th>sequence_ac</th>
+                    <th>sequence_id</th>
+                    <th>sequence_db</th>
+                    <th>start</th>
+                    <th>stop</th>
+                    <th>signature_ac</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in ctrl.responseRaw">
+                    <td>{{item.sequence_ac}}</td>
+                    <td>{{item.sequence_id}}</td>
+                    <td>{{item.sequence_db}}</td>
+                    <td>{{item.start}}</td>
+                    <td>{{item.stop}}</td>
+                    <td>{{item.signature_ac}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <br/>
+        <strong>CSV </strong>
+        <!--<div ng-show="ctrl.showInstruction">You need to click Submit</div>-->
+        <span class="glyphicon glyphicon-refresh glyphicon-spin" ng-show="ctrl.waiting"></span>
+
+        <div class="well" ng-show="true">
+
+            sequence_ac,
+            sequence_id,
+            sequence_db,
+            start,
+            stop,
+            signature_ac
+            <div ng-repeat="item in ctrl.responseRaw">
+                {{item.sequence_ac}},
+                {{item.sequence_id}},
+                {{item.sequence_db}},
+                {{item.start}},
+                {{item.stop}},
+                {{item.signature_ac}}<br/>
+            </div>
+
+        </div>
+    </div>
 
     <div class="container" style="padding-top: 40px;">
         <h3> References</h3>

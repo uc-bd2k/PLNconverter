@@ -4,6 +4,10 @@ buildscript {
     }
     repositories {
         mavenCentral()
+        add(new org.apache.ivy.plugins.resolver.URLResolver()) {
+            name = 'SourceForge'
+            addArtifactPattern 'http://downloads.sourceforge.net/project/[organization]/[module]-[revision].[ext]?r=&ts=&use_mirror=voxel'
+        }
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}") 
@@ -19,7 +23,7 @@ apply plugin: 'io.spring.dependency-management'
 
 jar {
     baseName = 'pln'
-    version = '0.0.1-SNAPSHOT'
+    version = '0.0.1'
 }
 sourceCompatibility = 1.8
 targetCompatibility = 1.8

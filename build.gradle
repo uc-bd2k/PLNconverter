@@ -4,10 +4,6 @@ buildscript {
     }
     repositories {
         mavenCentral()
-        add(new org.apache.ivy.plugins.resolver.URLResolver()) {
-            name = 'SourceForge'
-            addArtifactPattern 'http://downloads.sourceforge.net/project/[organization]/[module]-[revision].[ext]?r=&ts=&use_mirror=voxel'
-        }
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}") 

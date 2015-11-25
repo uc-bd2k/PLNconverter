@@ -2465,7 +2465,7 @@ function publishExternalAPI(angular) {
             ngModel: ngModelDirective,
             ngList: ngListDirective,
             ngChange: ngChangeDirective,
-            pattern: patternDirective,
+            modificationPattern: patternDirective,
             ngPattern: patternDirective,
             required: requiredDirective,
             ngRequired: requiredDirective,
@@ -3069,7 +3069,7 @@ var ALIASED_ATTR = {
   'ngMaxlength': 'maxlength',
   'ngMin': 'min',
   'ngMax': 'max',
-  'ngPattern': 'pattern'
+  'ngPattern': 'modificationPattern'
 };
 
 function getBooleanAttrName(element, name) {
@@ -7349,14 +7349,14 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
           // sanitize img[srcset] values
           var result = "";
 
-          // first check if there are spaces because it's not the same pattern
+          // first check if there are spaces because it's not the same modificationPattern
           var trimmedSrcset = trim(value);
           //                (   999x   ,|   999w   ,|   ,|,   )
           var srcPattern = /(\s+\d+x\s*,|\s+\d+w\s*,|\s+,|,\s+)/;
           var pattern = /\s/.test(trimmedSrcset) ? srcPattern : /(,)/;
 
           // split srcset into tuple of uri and descriptor except for the last item
-          var rawUris = trimmedSrcset.split(pattern);
+          var rawUris = trimmedSrcset.split(modificationPattern);
 
           // for each tuples
           var nbrUrisWith2parts = Math.floor(rawUris.length / 2);
@@ -18274,7 +18274,7 @@ function $FilterProvider($provide) {
  *     applies to nested object properties.
  *     The predicate can be negated by prefixing the string with `!`.
  *
- *   - `Object`: A pattern object can be used to filter specific properties on objects contained
+ *   - `Object`: A modificationPattern object can be used to filter specific properties on objects contained
  *     by `array`. For example `{name:"M", phone:"1"}` predicate will return an array of items
  *     which have property `name` containing "M" and property `phone` containing "1". A special
  *     property name `$` can be used (as in `{$:"text"}`) to accept a match against any
@@ -18598,7 +18598,7 @@ function currencyFilter($locale) {
  * @param {number|string} number Number to format.
  * @param {(number|string)=} fractionSize Number of decimal places to round the number to.
  * If this is not provided then the fraction size is computed from the current locale's number
- * formatting pattern. In the case of the default locale, it will be 3.
+ * formatting modificationPattern. In the case of the default locale, it will be 3.
  * @returns {string} Number rounded to decimalPlaces and places a “,” after each third digit.
  *
  * @example
@@ -18681,7 +18681,7 @@ function formatNumber(number, pattern, groupSep, decimalSep, fractionSize) {
 
     // determine fractionSize if it is not specified
     if (isUndefined(fractionSize)) {
-      fractionSize = Math.min(Math.max(pattern.minFrac, fractionLen), pattern.maxFrac);
+      fractionSize = Math.min(Math.max(modificationPattern.minFrac, fractionLen), modificationPattern.maxFrac);
     }
 
     // safely round numbers in JS without hitting imprecisions of floating-point arithmetics
@@ -18694,8 +18694,8 @@ function formatNumber(number, pattern, groupSep, decimalSep, fractionSize) {
     fraction = fraction[1] || '';
 
     var i, pos = 0,
-        lgroup = pattern.lgSize,
-        group = pattern.gSize;
+        lgroup = modificationPattern.lgSize,
+        group = modificationPattern.gSize;
 
     if (whole.length >= (lgroup + group)) {
       pos = whole.length - lgroup;
@@ -18732,9 +18732,9 @@ function formatNumber(number, pattern, groupSep, decimalSep, fractionSize) {
     isNegative = false;
   }
 
-  parts.push(isNegative ? pattern.negPre : pattern.posPre,
+  parts.push(isNegative ? modificationPattern.negPre : modificationPattern.posPre,
              formatedText,
-             isNegative ? pattern.negSuf : pattern.posSuf);
+             isNegative ? modificationPattern.negSuf : modificationPattern.posSuf);
   return parts.join('');
 }
 
@@ -20040,7 +20040,7 @@ function nullFormRenameControl(control, name) {
  *  - `min`
  *  - `minlength`
  *  - `number`
- *  - `pattern`
+ *  - `modificationPattern`
  *  - `required`
  *  - `url`
  *  - `date`
@@ -20591,10 +20591,10 @@ var inputType = {
    * @param {number=} ngMaxlength Sets `maxlength` validation error key if the value is longer than
    *    maxlength. Setting the attribute to a negative or non-numeric value, allows view values of
    *    any length.
-   * @param {string=} pattern Similar to `ngPattern` except that the attribute value is the actual string
+   * @param {string=} modificationPattern Similar to `ngPattern` except that the attribute value is the actual string
    *    that contains the regular expression body that will be converted to a regular expression
    *    as in the ngPattern directive.
-   * @param {string=} ngPattern Sets `pattern` validation error key if the ngModel value does not match
+   * @param {string=} ngPattern Sets `modificationPattern` validation error key if the ngModel value does not match
    *    a RegExp found by evaluating the Angular expression given in the attribute value.
    *    If the expression evaluates to a RegExp object, then this is used directly.
    *    If the expression evaluates to a string, then it will be converted to a RegExp
@@ -20624,12 +20624,12 @@ var inputType = {
          <form name="myForm" ng-controller="ExampleController">
            <label>Single word:
              <input type="text" name="input" ng-model="example.text"
-                    ng-pattern="example.word" required ng-trim="false">
+                    ng-modificationPattern="example.word" required ng-trim="false">
            </label>
            <div role="alert">
              <span class="error" ng-show="myForm.input.$error.required">
                Required!</span>
-             <span class="error" ng-show="myForm.input.$error.pattern">
+             <span class="error" ng-show="myForm.input.$error.modificationPattern">
                Single word only!</span>
            </div>
            <tt>text = {{example.text}}</tt><br/>
@@ -21226,10 +21226,10 @@ var inputType = {
    * @param {number=} ngMaxlength Sets `maxlength` validation error key if the value is longer than
    *    maxlength. Setting the attribute to a negative or non-numeric value, allows view values of
    *    any length.
-   * @param {string=} pattern Similar to `ngPattern` except that the attribute value is the actual string
+   * @param {string=} modificationPattern Similar to `ngPattern` except that the attribute value is the actual string
    *    that contains the regular expression body that will be converted to a regular expression
    *    as in the ngPattern directive.
-   * @param {string=} ngPattern Sets `pattern` validation error key if the ngModel value does not match
+   * @param {string=} ngPattern Sets `modificationPattern` validation error key if the ngModel value does not match
    *    a RegExp found by evaluating the Angular expression given in the attribute value.
    *    If the expression evaluates to a RegExp object, then this is used directly.
    *    If the expression evaluates to a string, then it will be converted to a RegExp
@@ -21309,7 +21309,7 @@ var inputType = {
    *
    * <div class="alert alert-warning">
    * **Note:** `input[url]` uses a regex to validate urls that is derived from the regex
-   * used in Chromium. If you need stricter validation, you can use `ng-pattern` or modify
+   * used in Chromium. If you need stricter validation, you can use `ng-modificationPattern` or modify
    * the built-in validators (see the {@link guide/forms Forms guide})
    * </div>
    *
@@ -21324,10 +21324,10 @@ var inputType = {
    * @param {number=} ngMaxlength Sets `maxlength` validation error key if the value is longer than
    *    maxlength. Setting the attribute to a negative or non-numeric value, allows view values of
    *    any length.
-   * @param {string=} pattern Similar to `ngPattern` except that the attribute value is the actual string
+   * @param {string=} modificationPattern Similar to `ngPattern` except that the attribute value is the actual string
    *    that contains the regular expression body that will be converted to a regular expression
    *    as in the ngPattern directive.
-   * @param {string=} ngPattern Sets `pattern` validation error key if the ngModel value does not match
+   * @param {string=} ngPattern Sets `modificationPattern` validation error key if the ngModel value does not match
    *    a RegExp found by evaluating the Angular expression given in the attribute value.
    *    If the expression evaluates to a RegExp object, then this is used directly.
    *    If the expression evaluates to a string, then it will be converted to a RegExp
@@ -21409,7 +21409,7 @@ var inputType = {
    * <div class="alert alert-warning">
    * **Note:** `input[email]` uses a regex to validate email addresses that is derived from the regex
    * used in Chromium. If you need stricter validation (e.g. requiring a top-level domain), you can
-   * use `ng-pattern` or modify the built-in validators (see the {@link guide/forms Forms guide})
+   * use `ng-modificationPattern` or modify the built-in validators (see the {@link guide/forms Forms guide})
    * </div>
    *
    * @param {string} ngModel Assignable angular expression to data-bind to.
@@ -21423,10 +21423,10 @@ var inputType = {
    * @param {number=} ngMaxlength Sets `maxlength` validation error key if the value is longer than
    *    maxlength. Setting the attribute to a negative or non-numeric value, allows view values of
    *    any length.
-   * @param {string=} pattern Similar to `ngPattern` except that the attribute value is the actual string
+   * @param {string=} modificationPattern Similar to `ngPattern` except that the attribute value is the actual string
    *    that contains the regular expression body that will be converted to a regular expression
    *    as in the ngPattern directive.
-   * @param {string=} ngPattern Sets `pattern` validation error key if the ngModel value does not match
+   * @param {string=} ngPattern Sets `modificationPattern` validation error key if the ngModel value does not match
    *    a RegExp found by evaluating the Angular expression given in the attribute value.
    *    If the expression evaluates to a RegExp object, then this is used directly.
    *    If the expression evaluates to a string, then it will be converted to a RegExp
@@ -22063,7 +22063,7 @@ function checkboxInputType(scope, element, attr, ctrl, $sniffer, $browser, $filt
  * @param {number=} ngMaxlength Sets `maxlength` validation error key if the value is longer than
  *    maxlength. Setting the attribute to a negative or non-numeric value, allows view values of any
  *    length.
- * @param {string=} ngPattern Sets `pattern` validation error key if the ngModel value does not match
+ * @param {string=} ngPattern Sets `modificationPattern` validation error key if the ngModel value does not match
  *    a RegExp found by evaluating the Angular expression given in the attribute value.
  *    If the expression evaluates to a RegExp object, then this is used directly.
  *    If the expression evaluates to a string, then it will be converted to a RegExp
@@ -22102,7 +22102,7 @@ function checkboxInputType(scope, element, attr, ctrl, $sniffer, $browser, $filt
  * @param {number=} ngMaxlength Sets `maxlength` validation error key if the value is longer than
  *    maxlength. Setting the attribute to a negative or non-numeric value, allows view values of any
  *    length.
- * @param {string=} ngPattern Sets `pattern` validation error key if the ngModel value does not match
+ * @param {string=} ngPattern Sets `modificationPattern` validation error key if the ngModel value does not match
  *    a RegExp found by evaluating the Angular expression given in the attribute value.
  *    If the expression evaluates to a RegExp object, then this is used directly.
  *    If the expression evaluates to a string, then it will be converted to a RegExp
@@ -23053,7 +23053,7 @@ var ngCloakDirective = ngDirective({
  *
  * @description
  * The `ngController` directive attaches a controller class to the view. This is a key aspect of how angular
- * supports the principles behind the Model-View-Controller design pattern.
+ * supports the principles behind the Model-View-Controller design modificationPattern.
  *
  * MVC components in angular:
  *
@@ -25541,7 +25541,7 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
         Integer is a valid value.
        </p>
        <form name="testForm" ng-controller="ExampleController">
-         <input ng-model="val" ng-pattern="/^\d+$/" name="anim" class="my-input"
+         <input ng-model="val" ng-modificationPattern="/^\d+$/" name="anim" class="my-input"
                 aria-describedby="inputDescription" />
        </form>
      </file>
@@ -27144,11 +27144,11 @@ var ngPluralizeDirective = ['$locale', '$interpolate', '$log', function($locale,
  *     with the corresponding item in the array by identity. Moving the same object in array would move the DOM
  *     element in the same way in the DOM.
  *
- *     For example: `item in items track by item.id` is a typical pattern when the items come from the database. In this
+ *     For example: `item in items track by item.id` is a typical modificationPattern when the items come from the database. In this
  *     case the object identity does not matter. Two objects are considered equivalent as long as their `id`
  *     property is same.
  *
- *     For example: `item in items | filter:searchText track by item.id` is a pattern that might be used to apply a filter
+ *     For example: `item in items | filter:searchText track by item.id` is a modificationPattern that might be used to apply a filter
  *     to items in conjunction with a tracking expression.
  *
  *   * `variable in expression as alias_expression` – You can also provide an optional alias expression which will then store the
@@ -28691,8 +28691,8 @@ var patternDirective = function() {
     link: function(scope, elm, attr, ctrl) {
       if (!ctrl) return;
 
-      var regexp, patternExp = attr.ngPattern || attr.pattern;
-      attr.$observe('pattern', function(regex) {
+      var regexp, patternExp = attr.ngPattern || attr.modificationPattern;
+      attr.$observe('modificationPattern', function(regex) {
         if (isString(regex) && regex.length > 0) {
           regex = new RegExp('^' + regex + '$');
         }
@@ -28707,8 +28707,8 @@ var patternDirective = function() {
         ctrl.$validate();
       });
 
-      ctrl.$validators.pattern = function(modelValue, viewValue) {
-        // HTML5 pattern constraint validates the input value, so we validate the viewValue
+      ctrl.$validators.modificationPattern = function(modelValue, viewValue) {
+        // HTML5 modificationPattern constraint validates the input value, so we validate the viewValue
         return ctrl.$isEmpty(viewValue) || isUndefined(regexp) || regexp.test(viewValue);
       };
     }

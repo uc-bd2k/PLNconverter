@@ -62,105 +62,89 @@
 
     </div>
 
-    <div class="container">
+    <div class="container" style="padding-top: 20px;">
 
-        <h3> Your input</h3>
-        <hr/>
+        <!--<h3> Your input</h3>-->
+        <!--<hr/>-->
 
-        <div class="form-group col-sm-4" style="padding-left: 0px;">
-            <label for="input">Enter peptides:</label>
-            <br/><br/>
-            <textarea class="form-control" rows="3" id="input" ng-model="ctrl.textArea"></textarea>
-            <br/>
-            Delimiter: &nbsp;
-            <label class="checkbox-inline">
-                <input type="checkbox" id="inlineCheckbox1" value="option2" checked="true" disabled="true"> comma
-            </label>
-            <label class="checkbox-inline">
-                <input type="checkbox" id="inlineCheckbox2" value="option1" checked="true" disabled="true"> semi-colon
-            </label>
-            <label class="checkbox-inline">
-                <input type="checkbox" id="inlineCheckbox3" value="option3" checked="true" disabled="true"> new line
-            </label>
-        </div>
-
-        <div class="form-group col-sm-3 col-sm-offset-1">
-            <label>Detected motifs: <br/></label>
-            <br/><br/>
-
-            <div ng-repeat="input in ctrl.inputs">{{input}}<br/></div>
-            <!--<div>-->
-            <!--Phosphorylation: {{ctrl.isPhosphorylation}}-->
-            <!--</div>-->
-            <!--<br/>-->
-
-            <!--<div>-->
-            <!--Parsed modification: {{ctrl.modification}}-->
-            <!--</div>-->
-            <!--<br/>-->
-
-            <!--<div>-->
-            <!--Parsed motif: {{ctrl.motif}}-->
-            <!--</div>-->
-
-        </div>
-
-        <div class="form-group col-sm-3 col-sm-offset-1">
-            <label>Examples of peptides:</label><br/><br/>
-
-            <div>
-                TPKDS[+80]PGIPPSANAHQLFR <a ng-href="javascript:void(0);"
-                                            ng-click="ctrl.updateTextArea('TPKDS[+80]PGIPPSANAHQLFR')">use</a>
+        <div class="well col-sm-12">
+            <div class="form-group col-sm-4" style="padding-left: 0px;">
+                <label for="input">Enter peptides:</label>
+                <br/><br/>
+                <textarea class="form-control" rows="3" id="input" ng-model="ctrl.textArea"></textarea>
+                <br/>
+                Delimiter: &nbsp;
+                <label class="checkbox-inline">
+                    <input type="checkbox" id="inlineCheckbox1" value="option2" checked="true" disabled="true"> comma
+                </label>
+                <label class="checkbox-inline">
+                    <input type="checkbox" id="inlineCheckbox2" value="option1" checked="true" disabled="true">
+                    semi-colon
+                </label>
+                <label class="checkbox-inline">
+                    <input type="checkbox" id="inlineCheckbox3" value="option3" checked="true" disabled="true"> new line
+                </label>
             </div>
-            <br/>
 
-            <div>
-                RNS[+80]SEASSGDFLDLK <a ng-href="javascript:void(0);"
-                                        ng-click="ctrl.updateTextArea('K[+112.1]SAPATGGVK[+42]K[+56]PHR')">use</a>
+            <div class="form-group col-sm-2 col-sm-offset-0">
+                <label>Parsed motifs: <br/></label>
+                <br/><br/>
+
+                <div style="padding-top: 5px;">
+                    <div ng-repeat="motif in ctrl.parsedMotifs">{{motif}}<br/></div>
+                </div>
             </div>
-            <br/>
 
-            <div>
-                LPLVPES[+80]PRR <a ng-href="javascript:void(0);"
-                                   ng-click="ctrl.updateTextArea('K[+98]SAPATGGVK[+28]K[+56]PHR')">use</a>
+            <div class="form-group col-sm-2 col-sm-offset-0">
+                <label>Parsed modifications: <br/></label>
+                <br/><br/>
+
+                <div style="padding-top: 5px;">
+                    <div ng-repeat="modification in ctrl.parsedModificationsFormatter">{{modification}}<br/></div>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-3 col-sm-offset-1">
+                <label>Ontology mapping:</label><br/><br/>
+
+                <div style="padding-top: 5px;">
+                    <div ng-repeat="mapping in ctrl.ontologyMappings">
+                        {{mapping.modification}}
+                        <a ng-href="http://www.ebi.ac.uk/ontology-lookup/?termId={{mapping.identifier}}" target="_blank">
+                             {{mapping.identifier}}</a></div>
+                        <br/>
+                </div>
+
             </div>
         </div>
     </div>
 
     <div class="container">
-        <hr/>
-        <h4> Submit to ProSite</h4>
+        <!--<hr/>-->
+        <!--<h4> Submit to ProSite</h4>-->
 
-        <p>Prosite REST API responds within 30 - 60 seconds.</p><br/>
+        <!--<p>Prosite REST API responds within 30 - 60 seconds.</p><br/>-->
 
         <div class="col-sm-offset-0">
             <button class="btn btn-default" ng-click="ctrl.onSubmit('table')">Convert</button>
-            <br/><br/><p ng-show="ctrl.waiting">Received: &nbsp; ({{ctrl.converted}} / {{ctrl.inputs.length}})
-        &nbsp; <span class="glyphicon glyphicon-refresh glyphicon-spin"></span></p>
-            <!--&nbsp;-->
-            <!--<button class="btn btn-default" ng-click="ctrl.onSubmit('csv')">Display as CSV</button>-->
+            <span ng-show="ctrl.waiting">&nbsp;Prosite REST API responds usually within 30 - 60 seconds.
+                &nbsp; ({{ctrl.numResponsesFromProsite}} / {{ctrl.parsedMotifs.length}})
+            &nbsp; <span class="glyphicon glyphicon-refresh glyphicon-spin"></span></span>
 
-            <!--&nbsp; &nbsp;  or use JSON via API query: <a ng-href="/pln/api/convert/{{ctrl.motif}}"-->
-            <!--target="_blank">/api/convert/{{ctrl.motif}}</a>-->
         </div>
     </div>
 
     <div class="container" ng-show="ctrl.showOutput">
 
-        <!--<hr/>-->
-        <!--<br/>-->
-        <strong>PLN format</strong>
-        <!--<div ng-show="ctrl.showInstruction">You need to click Submit</div>-->
-        <!--<span class="glyphicon glyphicon-refresh glyphicon-spin" ng-show="ctrl.waiting"></span>-->
+        <br/><br/><br/>
+        <strong>PLN format (only first hit from PSI-MOD and ProSite displayed. Start location and ontology identifier require debugging)</strong>
 
         <div class="well" ng-show="true">
-            Not implemented yet.
-            </div>
+            PLN=ver1:first_hit&REF=uniprot:{{ctrl.responseRaw[0].sequence_ac}}&SYM=hugo:{{ctrl.responseRaw[0].sequence_id}}&DES=&VAR=&MOD={{ctrl.responseRaw[0].start}},psi:{{ctrl.ontologyMappings[0].identifier}}$
+        </div>
         <br/>
 
-        <strong>Table </strong>
-        <!--<div ng-show="ctrl.showInstruction">You need to click Submit</div>-->
-
+        <strong>Prosite response as Table </strong>
 
         <div class="well" ng-show="true">
 
@@ -191,9 +175,7 @@
         </div>
 
         <br/>
-        <strong>CSV </strong>
-        <!--<div ng-show="ctrl.showInstruction">You need to click Submit</div>-->
-        <!--<span class="glyphicon glyphicon-refresh glyphicon-spin" ng-show="ctrl.waiting"></span>-->
+        <strong>Prosite response as CSV </strong>
 
         <div class="well" ng-show="true">
 
@@ -217,7 +199,7 @@
         </div>
     </div>
 
-    <div class="container" style="padding-top: 40px;">
+    <div class="container" style="padding-top: 20px;">
         <h3> References</h3>
         <hr/>
 

@@ -1,6 +1,8 @@
 package edu.uc.eh.controller;
 
 import edu.uc.eh.service.PrositeService;
+import edu.uc.eh.service.PsiModService;
+import edu.uc.eh.structures.StringDouble;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,20 +24,32 @@ public class RestAPI {
     private static final Logger log = LoggerFactory.getLogger(PrositeService.class);
 
     private final PrositeService prositeService;
+    private final PsiModService psiModService;
 
 
     @Autowired
-    public RestAPI(PrositeService prositeService) {
+    public RestAPI(PrositeService prositeService, PsiModService psiModService) {
+
         this.prositeService = prositeService;
+        this.psiModService = psiModService;
     }
 
-    @RequestMapping(value = "api/convert/{peptide}", method = RequestMethod.GET)
+    @RequestMapping(value = "api/prosite/{peptide}", method = RequestMethod.GET)
     public
     @ResponseBody
-    String convertToPLN(@PathVariable String peptide) {
+    String getFromProsite(@PathVariable String peptide) {
         log.info(String.format("Run convertToPLN with argument: %s", peptide));
 
         return prositeService.getTable(peptide);
+    }
+
+    @RequestMapping(value = "api/psimod/{modification}", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    StringDouble getFromPsiMod(@PathVariable String modification) {
+        log.info(String.format("Get modification identifier: %s", modification));
+
+        return psiModService.getIdentifier(modification);
     }
 
 }

@@ -10,12 +10,12 @@ FROM ols.term as T
 LEFT JOIN ols.annotation AS A
 ON T.term_pk = A.term_pk
 WHERE
-ontology_id='2081001' AND (annotation_name='Origin' OR annotation_name='DiffAvg')
+ontology_id='2081001' AND (annotation_name = 'Origin' OR annotation_name = 'DiffAvg')
 GROUP BY identifier
 HAVING
-count(*)=2
+count(*) = 2
 AND Origin != 'none'
 AND DiffAvg IS NOT NULL
-AND LENGTH(Origin)=1
+AND LENGTH(Origin) = 1
 AND DiffAvg != 0
 ORDER BY Origin, DiffAvg;

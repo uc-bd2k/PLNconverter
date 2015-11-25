@@ -7,9 +7,20 @@ import java.net.URL;
 /**
  * Created by chojnasm on 11/17/15.
  */
-public class NetworkUtils {
+public class UtilsNetwork {
 
-    public static String readUrl(String urlString) throws Exception {
+    private static UtilsNetwork instance;
+
+    private UtilsNetwork() {
+    }
+
+    static {
+        instance = new UtilsNetwork();
+    }
+
+    public static UtilsNetwork getInstance(){return instance;}
+
+    public String readUrl(String urlString) throws Exception {
         BufferedReader reader = null;
         try {
             URL url = new URL(urlString);

@@ -5,6 +5,11 @@ server:
   contextPath: /pln
   port: 8090
 
+urls:
+  prosite: http://prosite.expasy.org/cgi-bin/prosite/PSScan.cgi?sig=%s&lineage=9606&db=sp&output=json
+resources:
+  mapping: /psi-mod/mapping.csv
+
 ---
 spring:
   profiles: default

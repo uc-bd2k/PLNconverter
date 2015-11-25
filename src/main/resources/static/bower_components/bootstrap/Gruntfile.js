@@ -372,7 +372,7 @@ module.exports = function (grunt) {
 
     sed: {
       versionNumber: {
-        pattern: (function () {
+        modificationPattern: (function () {
           var old = grunt.option('oldver');
           return old ? RegExp.quote(old) : old;
         })(),

@@ -15,4 +15,9 @@ public class PlnPortalApplicationTests {
 	public void contextLoads() {
 	}
 
+	@Test
+	public void UtilsFormatTest() throws Exception {
+
+
+	}
 }

@@ -44,12 +44,16 @@ public class UtilsIO {
             String inputLine;
 
             while ((inputLine = br.readLine()) != null) {
-                String[] fields = inputLine.split(",");
+
+                String[] fields = inputLine.split("\t");
+                if(fields[0].equals("identifier")) continue;
+
                 String identifier = fields[0];
                 Character c = fields[1].charAt(0);
                 Double d = Double.parseDouble(fields[2]);
+                String description = fields[3];
 
-                DiffIdentifier di = new DiffIdentifier(d,identifier);
+                DiffIdentifier di = new DiffIdentifier(d,identifier,description);
 
                 if(!map.containsKey(c)){
                     map.put(c,new ArrayList<>());

@@ -5,7 +5,8 @@
 
 SELECT identifier,
 GROUP_CONCAT(annotation_str_value SEPARATOR ' ') AS Origin,
-CAST(GROUP_CONCAT(annotation_num_value SEPARATOR ' ') AS DECIMAL(10,2)) AS DiffAvg
+CAST(GROUP_CONCAT(annotation_num_value SEPARATOR ' ') AS DECIMAL(10,2)) AS DiffAvg,
+definition
 FROM ols.term as T
 LEFT JOIN ols.annotation AS A
 ON T.term_pk = A.term_pk

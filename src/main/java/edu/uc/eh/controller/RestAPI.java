@@ -2,7 +2,7 @@ package edu.uc.eh.controller;
 
 import edu.uc.eh.service.PrositeService;
 import edu.uc.eh.service.PsiModService;
-import edu.uc.eh.structures.StringDouble;
+import edu.uc.eh.structures.StringDoubleString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.List;
 
 /**
  * Created by chojnasm on 11/9/15.
@@ -46,7 +44,7 @@ public class RestAPI {
     @RequestMapping(value = "api/psimod/{modification}", method = RequestMethod.GET)
     public
     @ResponseBody
-    StringDouble getFromPsiMod(@PathVariable String modification) {
+    StringDoubleString getFromPsiMod(@PathVariable String modification) {
         log.info(String.format("Get modification identifier: %s", modification));
 
         return psiModService.getIdentifier(modification);

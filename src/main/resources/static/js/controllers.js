@@ -6,6 +6,8 @@ var appModule = angular.module('plnModule', []);
 appModule.controller("MainCtrl", ['$http', '$scope', function ($http, $scope) {
 
     var self = this;
+
+    self.tree = false;
     self.textArea = "IYQY[+80]IQSR\nK[+112.1]SAPATGGVK[+42]K[+56]PHR";
     self.response = " ";
 
@@ -48,8 +50,18 @@ appModule.controller("MainCtrl", ['$http', '$scope', function ($http, $scope) {
         // format parsed modifiacations
         self.parsedModificationsFormatter = self.parsedModifications
             .map(function (e) {
+                if(e != null)
                 return e.join(" ");
         });
+
+        self.pln = {};
+        //self.pln = {
+        //    a: 1,
+        //    b: 2,
+        //    c: {
+        //        d: "3"
+        //    },
+        //};
 
     });
 
@@ -58,23 +70,30 @@ appModule.controller("MainCtrl", ['$http', '$scope', function ($http, $scope) {
         self.ontologyMappings = [];
 
         self.parsedModifications.forEach(function(e){
-            e.forEach(function(el){
-                (function (el) {
-                    $http.get("api/psimod/" + el)
-                        .success(function (data) {
+            if(e != null) {
+                e.forEach(function (el) {
+                    (function (el) {
+                        $http.get("api/psimod/" + el)
+                            .success(function (data) {
 
-                            var result = {};
-                            result.identifier = data.string;
-                            result.modification = el;
-                            self.ontologyMappings.push(result);
-                        })
-                        .error(function (data, status) {
-                            console.log(data + ' Status: ' + status);
+                                var result = {};
+                                result.identifier = data.string;
+                                result.modification = el;
+                                result.diffavg = data.aDouble;
+                                result.description = data.description;
+                                self.ontologyMappings.push(result);
+                            })
+                            .error(function (data, status) {
+                                //console.log(data + ' Status: ' + status);
+                                var result = {};
+                                result.modification = el;
+                                result.description = "Not found";
+                                self.ontologyMappings.push(result);
 
-                        });
-                }(el));
-            })
-
+                            });
+                    }(el));
+                })
+            }
         });
     })
 
@@ -97,6 +116,7 @@ appModule.controller("MainCtrl", ['$http', '$scope', function ($http, $scope) {
                 $http.get(url + self.parsedMotifs[j])
                     .success(function (data) {
 
+                        //console.log(data);
                         data.matchset.map(function (e) {
                             e.motif = localMotif;
                             return e;
@@ -115,8 +135,16 @@ appModule.controller("MainCtrl", ['$http', '$scope', function ($http, $scope) {
                         }
                     })
                     .error(function (data, status) {
-                        console.log(data + ' Status: ' + status);
-                        self.waiting = false;
+                        //console.log(data + ' Status1: ' + status);
+                        self.responseRaw = self.responseRaw.concat({"motif":localMotif,"sequence_db":"Not found in DB"});
+                        //self.response = self.response.concat(JSON.stringify(matchset));
+
+                        //console.log("ResponseRaw: " + self.responseRaw);
+
+                        self.numResponsesFromProsite++;
+                        if (self.numResponsesFromProsite >= self.parsedMotifs.length) {
+                            self.waiting = false;
+                        }
                     });
             })(localMotif);
         }

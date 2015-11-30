@@ -7,10 +7,12 @@ package edu.uc.eh.structures;
 public class DiffIdentifier implements Comparable<DiffIdentifier>{
     private Double diff;
     private String identifier;
+    private String description;
 
-    public DiffIdentifier(Double diff, String identifier) {
+    public DiffIdentifier(Double diff, String identifier, String description) {
         this.diff = diff;
         this.identifier = identifier;
+        this.description = description;
     }
 
     public Double getDiff() {
@@ -21,6 +23,9 @@ public class DiffIdentifier implements Comparable<DiffIdentifier>{
         return identifier;
     }
 
+    public String getDescription() {
+        return description;
+    }
 
     @Override
     public int compareTo(DiffIdentifier that) {

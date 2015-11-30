@@ -24,7 +24,7 @@ public class PrositeService {
 
     public String getTable(String peptide) {
 
-        String response = "Prosite API did not respond.";
+        String response;
         String prositeUrl = String.format(prositeTemplate, peptide);
 
         log.info("Querying: " + prositeUrl);
@@ -33,7 +33,11 @@ public class PrositeService {
         try {
             response = UtilsNetwork.getInstance().readUrl(prositeUrl);
         } catch (Exception e) {
-            e.printStackTrace();
+
+                String msg =  String.format("Peptide %s not found", peptide);
+                log.warn(msg);
+                throw new RuntimeException(msg);
+
         }
 
         log.info("Response: " + response);

@@ -3,14 +3,16 @@ package edu.uc.eh.structures;
 /**
  * Created by chojnasm on 11/25/15.
  */
-public class StringDouble {
+public class StringDoubleString {
 
     private String string;
     private Double aDouble;
+    private String description;
 
-    public StringDouble(String string, Double aDouble) {
+    public StringDoubleString(String string, Double aDouble, String description) {
         this.string = string;
         this.aDouble = aDouble;
+        this.description = description;
     }
 
     public String getString() {
@@ -27,5 +29,13 @@ public class StringDouble {
 
     public void setaDouble(Double aDouble) {
         this.aDouble = aDouble;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

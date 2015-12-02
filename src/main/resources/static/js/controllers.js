@@ -50,27 +50,21 @@ appModule.controller("MainCtrl", ['$http', '$scope', function ($http, $scope) {
         // format parsed modifiacations
         self.parsedModificationsFormatter = self.parsedModifications
             .map(function (e) {
-                if(e != null)
-                return e.join(" ");
-        });
+                if (e != null)
+                    return e.join(" ");
+            });
 
-        self.pln = {};
-        //self.pln = {
-        //    a: 1,
-        //    b: 2,
-        //    c: {
-        //        d: "3"
-        //    },
-        //};
-
+        self.pln = [];
     });
 
     // track changes in parsed modifications and refresh psi-mod mapping
-    $scope.$watch(function(){return self.parsedModifications},function(nV,oV){
+    $scope.$watch(function () {
+        return self.parsedModifications
+    }, function (nV, oV) {
         self.ontologyMappings = [];
 
-        self.parsedModifications.forEach(function(e){
-            if(e != null) {
+        self.parsedModifications.forEach(function (e) {
+            if (e != null) {
                 e.forEach(function (el) {
                     (function (el) {
                         $http.get("api/psimod/" + el)
@@ -132,11 +126,15 @@ appModule.controller("MainCtrl", ['$http', '$scope', function ($http, $scope) {
                         self.numResponsesFromProsite++;
                         if (self.numResponsesFromProsite >= self.parsedMotifs.length) {
                             self.waiting = false;
+                            self.updatePln();
                         }
                     })
                     .error(function (data, status) {
                         //console.log(data + ' Status1: ' + status);
-                        self.responseRaw = self.responseRaw.concat({"motif":localMotif,"sequence_db":"Not found in DB"});
+                        self.responseRaw = self.responseRaw.concat({
+                            "motif": localMotif,
+                            "sequence_db": "Not found in DB"
+                        });
                         //self.response = self.response.concat(JSON.stringify(matchset));
 
                         //console.log("ResponseRaw: " + self.responseRaw);
@@ -144,6 +142,7 @@ appModule.controller("MainCtrl", ['$http', '$scope', function ($http, $scope) {
                         self.numResponsesFromProsite++;
                         if (self.numResponsesFromProsite >= self.parsedMotifs.length) {
                             self.waiting = false;
+                            self.updatePln();
                         }
                     });
             })(localMotif);
@@ -151,4 +150,45 @@ appModule.controller("MainCtrl", ['$http', '$scope', function ($http, $scope) {
 
     }
 
+    self.updatePln = function () {
+        self.pln = [];
+
+        var motifs = self.parsedMotifs;
+        var peptides = self.textArea
+            .split(self.rowSplitPattern);
+
+        for (var i = 0; i < peptides.length; i++) {
+            var motif = motifs[i];
+            var peptide = peptides[i];
+
+            var firstPrositeResponse = self.responseRaw
+                .filter(function (e) {
+                    return e.motif == motif;
+                });
+
+            firstPrositeResponse = firstPrositeResponse[0];
+            var uniprot = firstPrositeResponse.sequence_ac;
+            var hugo = firstPrositeResponse.sequence_id;
+            var mod = firstPrositeResponse.start;
+
+            var ont = [];
+            self.ontologyMappings
+                .filter(function (el) {
+                    return (peptide.indexOf(el.modification) > -1);
+                })
+                .map(function (e) {
+                    ont.push(e.identifier);
+                });
+
+            self.pln.push({
+                "PLN": {"ver1": "first_hit"},
+                "REF": {"uniprot": uniprot},
+                "SYM": {"hugo": hugo},
+                "DES": {},
+                "VAR": {},
+                "MOD": mod,
+                "ONT": ont
+            });
+        }
+    }
 }]);

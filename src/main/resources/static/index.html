@@ -119,7 +119,12 @@
                         <span style="color:steelblue;" class="glyphicon glyphicon-cog"></span> &nbsp;Settings
                     </a>
 
-                    <button class="btn btn-primary col-sm-offset-10" ng-click="ctrl.onSubmit('table')">Convert</button>
+                    <button class="btn btn-primary col-sm-offset-10" ng-click="ctrl.onSubmit('table')">
+                        Convert
+                        <span ng-show="ctrl.waiting">&nbsp; ({{ctrl.numResponsesFromProsite}} / {{ctrl.parsedMotifs.length}})&nbsp;
+                        <span class="glyphicon glyphicon-refresh glyphicon-spin"></span>
+                        </span>
+                    </button>
 
                 </div>
                 <div id="collapseOne" class="accordion-body collapse">
@@ -135,11 +140,9 @@
     </div>
 
     <div class="container">
-        <div class="col-sm-offset-0">
+        <div style="float:right;">
             <!--<button class="btn btn-default" ng-click="ctrl.onSubmit('table')">Convert</button>-->
-            <span ng-show="ctrl.waiting">&nbsp;Prosite REST API responds usually within 30 - 60 seconds.
-                &nbsp; ({{ctrl.numResponsesFromProsite}} / {{ctrl.parsedMotifs.length}})
-            &nbsp; <span class="glyphicon glyphicon-refresh glyphicon-spin"></span></span>
+            <span ng-show="ctrl.waiting">&nbsp;Prosite REST API responds usually within 30 - 60 seconds.</span>
 
         </div>
     </div>
@@ -147,7 +150,7 @@
     <div class="container" ng-show="ctrl.showOutput">
 
         <br/><br/><br/>
-        <strong>PLN object as JSON </strong>(only first hit from ProSite)
+        <strong>PLN objects as JSON </strong>(only first hit from ProSite)
         <span style="float:right">
             <a href="javascript:void(0);" ng-click="ctrl.tree=!ctrl.tree" style="text-decoration:none;"
                ng-style="ctrl.tree && {'font-weight': 'bold'}">Tree</a>

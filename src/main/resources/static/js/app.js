@@ -10,9 +10,37 @@ app.filter('treeJSON', function () {
     return prettyPrintJson;
 });
 
-app.filter('inlineJSON', function () {
-    function prettyPrintJson(json) {
-        return JSON ? '\n'+JSON.stringify(json) : 'your browser doesnt support JSON so cant pretty print';
+app.filter('inline', function () {
+    function inlinePLN(plnArray) {
+        var output = '\n';
+        for(var i = 0; i < plnArray.length; i++){
+            var plnLocal = plnArray[i];
+
+            var plnKey = Object.keys(plnLocal.PLN)[0];
+            var plnValue = plnLocal.PLN[plnKey];
+
+            var refKey = Object.keys(plnLocal.REF)[0];
+            var refValue = plnLocal.REF[refKey];
+
+            var symKey = Object.keys(plnLocal.SYM)[0];
+            var symValue = plnLocal.SYM[symKey];
+
+            var DES = '';
+            var VAR = '';
+
+            var PTM = plnLocal.PTM;
+            var PSI_ONT = plnLocal.PSI_ONT;
+
+            output = output +
+                "PLN=" + plnKey + ":" + plnValue + "&" +
+                "REF=" + refKey + ":" + refValue + "&" +
+                "SYM=" + symKey + ":" + symValue + "&" +
+                "DES=" + "&" +
+                "VAR=" + "&" +
+                "PTM=" + PTM + "&" +
+                "PSI_ONT=" + PSI_ONT + "#" + "\n";
+        }
+        return output;
     }
-    return prettyPrintJson;
+    return inlinePLN;
 });

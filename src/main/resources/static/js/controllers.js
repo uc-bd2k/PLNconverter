@@ -7,7 +7,7 @@ appModule.controller("MainCtrl", ['$http', '$scope', function ($http, $scope) {
 
     var self = this;
 
-    self.tree = false;
+    self.formatAsJsonOrInline = false;
     self.textArea = "IYQY[+80]IQSR\nK[+112.1]SAPATGGVK[+42]K[+56]PHR";
     self.response = " ";
 
@@ -186,8 +186,8 @@ appModule.controller("MainCtrl", ['$http', '$scope', function ($http, $scope) {
                 "SYM": {"hugo": hugo},
                 "DES": {},
                 "VAR": {},
-                "MOD": mod,
-                "ONT": ont
+                "PTM": mod,
+                "PSI_ONT": ont
             });
         }
     }

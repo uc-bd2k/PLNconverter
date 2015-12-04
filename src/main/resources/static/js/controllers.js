@@ -169,7 +169,7 @@ appModule.controller("MainCtrl", ['$http', '$scope', function ($http, $scope) {
             firstPrositeResponse = firstPrositeResponse[0];
             var uniprot = firstPrositeResponse.sequence_ac;
             var hugo = firstPrositeResponse.sequence_id;
-            var mod = firstPrositeResponse.start;
+            var ptm = firstPrositeResponse.start;
 
             var ont = [];
             self.ontologyMappings
@@ -177,7 +177,13 @@ appModule.controller("MainCtrl", ['$http', '$scope', function ($http, $scope) {
                     return (peptide.indexOf(el.modification) > -1);
                 })
                 .map(function (e) {
-                    ont.push(e.identifier);
+                    var offset = peptide.indexOf(e.modification);
+                    var beforeOffset = peptide.substring(0,offset);
+                    console.log(beforeOffset);
+                    var decreaseOffset = beforeOffset.length - beforeOffset.replace(self.modificationPattern, '').length;
+                    console.log(decreaseOffset);
+
+                    ont.push({"identifier": e.identifier, "offset": offset - decreaseOffset + ptm});
                 });
 
             self.pln.push({
@@ -186,8 +192,7 @@ appModule.controller("MainCtrl", ['$http', '$scope', function ($http, $scope) {
                 "SYM": {"hugo": hugo},
                 "DES": {},
                 "VAR": {},
-                "PTM": mod,
-                "PSI_ONT": ont
+                "PTM": ont
             });
         }
     }

@@ -5,15 +5,16 @@ var app = angular.module('plnApplication', ['plnModule']);
 
 app.filter('treeJSON', function () {
     function prettyPrintJson(json) {
-        return JSON ? '\n'+JSON.stringify(json, null ,' ') : 'your browser doesnt support JSON so cant pretty print';
+        return JSON ? '\n' + JSON.stringify(json, null, ' ') : 'your browser doesnt support JSON so cant pretty print';
     }
+
     return prettyPrintJson;
 });
 
 app.filter('inline', function () {
     function inlinePLN(plnArray) {
         var output = '\n';
-        for(var i = 0; i < plnArray.length; i++){
+        for (var i = 0; i < plnArray.length; i++) {
             var plnLocal = plnArray[i];
 
             var plnKey = Object.keys(plnLocal.PLN)[0];
@@ -28,8 +29,14 @@ app.filter('inline', function () {
             var DES = '';
             var VAR = '';
 
-            var PTM = plnLocal.PTM;
-            var PSI_ONT = plnLocal.PSI_ONT;
+            var PTM = '';
+
+            plnLocal.PTM.map(function (e, i) {
+                if (i > 0) {
+                    PTM += "+";
+                }
+                PTM += e.offset + "," + e.identifier;
+            });
 
             output = output +
                 "PLN=" + plnKey + ":" + plnValue + "&" +
@@ -37,10 +44,10 @@ app.filter('inline', function () {
                 "SYM=" + symKey + ":" + symValue + "&" +
                 "DES=" + "&" +
                 "VAR=" + "&" +
-                "PTM=" + PTM + "&" +
-                "PSI_ONT=" + PSI_ONT + "#" + "\n";
+                "PTM=" + PTM + "#" + "\n";
         }
         return output;
     }
+
     return inlinePLN;
 });

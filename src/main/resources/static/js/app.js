@@ -35,7 +35,7 @@ app.filter('inline', function () {
                     var ptmForHit = [];
 
                     for (var index = 0; index < ptmGroup.length; index++) {
-                        ptmForHit.push(ptmGroup[index].offset + "+" + ptmGroup[index].identifier);
+                        ptmForHit.push(ptmGroup[index].identifier+"@"+ptmGroup[index].offset);
                     }
 
                     PTM.push(ptmForHit.join(","));

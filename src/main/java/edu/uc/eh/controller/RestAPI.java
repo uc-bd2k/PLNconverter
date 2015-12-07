@@ -2,7 +2,7 @@ package edu.uc.eh.controller;
 
 import edu.uc.eh.service.PrositeService;
 import edu.uc.eh.service.PsiModService;
-import edu.uc.eh.structures.StringDoubleString;
+import edu.uc.eh.structures.StringDoubleStringList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,10 +44,10 @@ public class RestAPI {
     @RequestMapping(value = "api/psimod/{modification}", method = RequestMethod.GET)
     public
     @ResponseBody
-    StringDoubleString getFromPsiMod(@PathVariable String modification) {
+    StringDoubleStringList getFromPsiMod(@PathVariable String modification) {
         log.info(String.format("Get modification identifier: %s", modification));
 
-        return psiModService.getIdentifier(modification);
+        return psiModService.getIdentifier(modification, 1.0);
     }
 
 }

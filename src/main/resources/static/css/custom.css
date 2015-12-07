@@ -4,6 +4,10 @@
     background-color: steelblue;
     min-width: 300px;
 }
+/* Tooltip did not render in a table */
+td .tooltip {
+    position:absolute
+}
 
 /* Spin ----------------------------- */
 .glyphicon-spin {

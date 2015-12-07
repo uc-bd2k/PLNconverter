@@ -2,13 +2,14 @@ package edu.uc.eh.service;
 
 import edu.uc.eh.structures.DiffIdentifier;
 import edu.uc.eh.structures.CharacterDouble;
-import edu.uc.eh.structures.StringDoubleString;
+import edu.uc.eh.structures.StringDoubleStringList;
 import edu.uc.eh.utils.UtilsFormat;
 import edu.uc.eh.utils.UtilsIO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +35,7 @@ public class PsiModService {
      * @param modification
      * @return
      */
-    public StringDoubleString getIdentifier(String modification) {
+    public StringDoubleStringList getIdentifier(String modification, double epsilon) {
         CharacterDouble cd = UtilsFormat.getInstance().modificationToCharDouble(modification);
         List<DiffIdentifier> list = mapping.get(cd.getCharacter());
         String currentIdentifier = "";
@@ -43,6 +44,8 @@ public class PsiModService {
         Double originalDiff = null;
         String description = null;
 
+        List<StringDoubleStringList> similar = null;
+
         if(list == null) {
             String msg =  String.format("Modification %s not found", modification);
             log.warn(msg);
@@ -50,13 +53,23 @@ public class PsiModService {
         }
 
         for (DiffIdentifier di : list) {
-            if (Math.abs(di.getDiff() - cd.getaDouble()) < minDiff) {
-                minDiff = Math.abs(di.getDiff() - cd.getaDouble());
-                originalDiff = di.getDiff();
-                currentIdentifier = di.getIdentifier();
-                description = di.getDescription();
+
+            double delta = Math.abs(di.getDiff() - cd.getaDouble());
+            if (delta <= minDiff && delta < epsilon) {
+
+                if(delta == minDiff){
+                    if(similar == null)similar = new ArrayList<>();
+
+                    similar.add(new StringDoubleStringList(di.getIdentifier(),di.getDiff(),di.getDescription(),null));
+                }else{
+                    minDiff = delta;
+                    originalDiff = di.getDiff();
+                    currentIdentifier = di.getIdentifier();
+                    description = di.getDescription();
+                }
+
             }
         }
-        return new StringDoubleString(currentIdentifier, originalDiff, description);
+        return new StringDoubleStringList(currentIdentifier, originalDiff, description,similar);
     }
 }

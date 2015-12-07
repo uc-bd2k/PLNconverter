@@ -121,7 +121,7 @@
 
                     <button class="btn btn-primary col-sm-offset-10" ng-click="ctrl.onSubmit('table')">
                         Convert &nbsp;
-                        <span ng-show="ctrl.waiting"><!--&nbsp; ({{ctrl.numResponsesFromProsite}} / {{ctrl.parsedMotifs.length}})&nbsp;-->
+                        <span ng-show="ctrl.waiting">
                         <span class="glyphicon glyphicon-refresh glyphicon-spin"></span>
                         </span>
                     </button>
@@ -164,14 +164,6 @@
 
         </span>
 
-        <!--First hit:-->
-        <!--<pre ng-show="!ctrl.formatAsJsonOrInline" style="background-color: #D9EDF7">-->
-        <!--{{ctrl.plnFirstHit | inline}}-->
-        <!--</pre>-->
-
-         <!--<pre ng-show="ctrl.formatAsJsonOrInline" style="background-color: #D9EDF7">-->
-        <!--{{ctrl.plnFirstHit | treeJSON}}-->
-        <!--</pre>-->
 
         All hits:
         <pre ng-show="!ctrl.formatAsJsonOrInline" style="background-color: #D9EDF7">
@@ -191,10 +183,11 @@
             <table class="table table-striped table-bordered">
                 <thead>
                 <tr>
-                    <th>modification</th>
-                    <th>identifier</th>
+                    <th>Modification</th>
+                    <th>Identifier</th>
                     <th>DiffAvg</th>
                     <th>Description</th>
+                    <th>Similar</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -205,6 +198,12 @@
                         {{mapping.identifier}}</a></td>
                     <td>{{mapping.diffavg}}</td>
                     <td>{{mapping.description}}</td>
+                    <td>
+                        <span ng-repeat="similar in mapping.similar">
+                            <a ng-href="http://www.ebi.ac.uk/ontology-lookup/?termId={{similar.string}}"
+                               target="_blank">{{similar.string}}</a><br/>
+                        </span>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -243,29 +242,6 @@
             </table>
         </div>
 
-        <!--<br/>-->
-        <!--<strong>Prosite response as CSV </strong>-->
-
-        <!--<div class="well" ng-show="true">-->
-
-        <!--motif,-->
-        <!--sequence_ac,-->
-        <!--sequence_id,-->
-        <!--sequence_db,-->
-        <!--start,-->
-        <!--stop,-->
-        <!--signature_ac-->
-        <!--<div ng-repeat="item in ctrl.responseRaw">-->
-        <!--{{item.motif}},-->
-        <!--{{item.sequence_ac}},-->
-        <!--{{item.sequence_id}},-->
-        <!--{{item.sequence_db}},-->
-        <!--{{item.start}},-->
-        <!--{{item.stop}},-->
-        <!--{{item.signature_ac}}<br/>-->
-        <!--</div>-->
-
-        <!--</div>-->
     </div>
 
     <div class="container" style="padding-top: 20px;">

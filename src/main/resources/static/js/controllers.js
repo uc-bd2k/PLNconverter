@@ -80,6 +80,7 @@ appModule.controller("MainCtrl", ['$http', '$scope', function ($http, $scope) {
                                 result.modification = el;
                                 result.diffavg = data.aDouble;
                                 result.description = data.description;
+                                result.similar = data.similar;
                                 self.ontologyMappings.push(result);
                             })
                             .error(function (data, status) {

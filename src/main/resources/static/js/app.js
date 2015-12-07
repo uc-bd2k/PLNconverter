@@ -26,25 +26,31 @@ app.filter('inline', function () {
             var symKey = Object.keys(plnLocal.SYM)[0];
             var symValue = plnLocal.SYM[symKey];
 
-            var DES = '';
-            var VAR = '';
+            var PTM = [];
 
-            var PTM = '';
 
-            plnLocal.PTM.map(function (e, i) {
-                if (i > 0) {
-                    PTM += "+";
+            plnLocal.PTM.map(function (ptmGroup) {
+                    //console.log(ptmGroup);
+
+                    var ptmForHit = [];
+
+                    for (var index = 0; index < ptmGroup.length; index++) {
+                        ptmForHit.push(ptmGroup[index].offset + "+" + ptmGroup[index].identifier);
+                    }
+
+                    PTM.push(ptmForHit.join(","));
                 }
-                PTM += e.offset + "," + e.identifier;
-            });
+            );
 
             output = output +
                 "PLN=" + plnKey + ":" + plnValue + "&" +
-                "REF=" + refKey + ":" + refValue + "&" +
-                "SYM=" + symKey + ":" + symValue + "&" +
+                "REF=" + refKey + ":" + refValue.join("|") + "&" +
+                "SYM=" + symKey + ":" + symValue.join("|") + "&" +
                 "DES=" + "&" +
                 "VAR=" + "&" +
-                "PTM=" + PTM + "#" + "\n";
+                "PTM=" + PTM.join("|") + "#" + "\n";
+
+
         }
         return output;
     }

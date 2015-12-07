@@ -8,6 +8,7 @@ appModule.controller("MainCtrl", ['$http', '$scope', function ($http, $scope) {
     var self = this;
 
     self.formatAsJsonOrInline = false;
+    self.allVsFirstPrositeHits = false;
     self.textArea = "IYQY[+80]IQSR\nK[+112.1]SAPATGGVK[+42]K[+56]PHR";
     self.response = " ";
 
@@ -26,6 +27,9 @@ appModule.controller("MainCtrl", ['$http', '$scope', function ($http, $scope) {
     self.ontologyMappings = [];
 
     self.numResponsesFromProsite;
+
+    self.pln = [];
+    self.plnFirstHit = [];
 
     // track changes in user input
     $scope.$watch(function () {
@@ -55,6 +59,7 @@ appModule.controller("MainCtrl", ['$http', '$scope', function ($http, $scope) {
             });
 
         self.pln = [];
+        self.plnFirstHit = [];
     });
 
     // track changes in parsed modifications and refresh psi-mod mapping
@@ -166,34 +171,55 @@ appModule.controller("MainCtrl", ['$http', '$scope', function ($http, $scope) {
                     return e.motif == motif;
                 });
 
-            firstPrositeResponse = firstPrositeResponse[0];
-            var uniprot = firstPrositeResponse.sequence_ac;
-            var hugo = firstPrositeResponse.sequence_id;
-            var ptm = firstPrositeResponse.start;
+            //firstPrositeResponse = firstPrositeResponse[0];
+            var uniprotArray = [];
+            var hugoArray = [];
+            var ptmArray = [];
 
-            var ont = [];
-            self.ontologyMappings
-                .filter(function (el) {
-                    return (peptide.indexOf(el.modification) > -1);
-                })
-                .map(function (e) {
-                    var offset = peptide.indexOf(e.modification);
-                    var beforeOffset = peptide.substring(0,offset);
-                    console.log(beforeOffset);
-                    var decreaseOffset = beforeOffset.length - beforeOffset.replace(self.modificationPattern, '').length;
-                    console.log(decreaseOffset);
+            firstPrositeResponse.map(function(e){
+                uniprotArray.push(e.sequence_ac);
+                hugoArray.push(e.sequence_id);
+                ptmArray.push(e.start);
+            });
 
-                    ont.push({"identifier": e.identifier, "offset": offset - decreaseOffset + ptm});
-                });
+            var uniprot = uniprotArray;
+            var hugo = hugoArray;
+
+
+            var ptm = [];
+
+            //
+
+            ptmArray.map(function(start, ptmArrayIndex){
+
+                var ptmLocal = [];
+
+                // for a given peptide iterate through modifications, calculate its offset and return to ptmLocal
+                self.ontologyMappings
+                    .filter(function (el) {
+                        return (peptide.indexOf(el.modification) > -1);
+                    })
+                    .map(function (e) {
+                        var offset = peptide.indexOf(e.modification);
+                        var beforeOffset = peptide.substring(0,offset);
+                        var decreaseOffset = beforeOffset.length - beforeOffset.replace(self.modificationPattern, '').length;
+
+                        ptmLocal.push({"identifier": e.identifier, "offset": offset - decreaseOffset + start});
+                    });
+
+                ptm.push(ptmLocal);
+            });
+
 
             self.pln.push({
-                "PLN": {"ver1": "first_hit"},
+                "PLN": {"ver1": "all_hits"},
                 "REF": {"uniprot": uniprot},
                 "SYM": {"hugo": hugo},
                 "DES": {},
                 "VAR": {},
-                "PTM": ont
+                "PTM": ptm
             });
+
         }
     }
 }]);

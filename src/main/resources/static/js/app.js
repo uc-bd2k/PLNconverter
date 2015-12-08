@@ -35,19 +35,19 @@ app.filter('inline', function () {
                     var ptmForHit = [];
 
                     for (var index = 0; index < ptmGroup.length; index++) {
-                        ptmForHit.push(ptmGroup[index].identifier+"@"+ptmGroup[index].offset);
+                        ptmForHit.push(ptmGroup[index].identifier+"@"+ptmGroup[index].location);
                     }
 
-                    PTM.push(ptmForHit.join(","));
+                    PTM.push(ptmForHit.join("&"));
                 }
             );
 
             output = output +
-                "PLN=" + plnKey + ":" + plnValue + "&" +
-                "REF=" + refKey + ":" + refValue.join("|") + "&" +
-                "SYM=" + symKey + ":" + symValue.join("|") + "&" +
-                "DES=" + "&" +
-                "VAR=" + "&" +
+                "PLN=" + plnKey + ":" + plnValue + ";" +
+                "REF=" + refKey + ":" + refValue.join("|") + ";" +
+                "SYM=" + symKey + ":" + symValue.join("|") + ";" +
+                "DES=" + ";" +
+                "VAR=" + ";" +
                 "PTM=" + PTM.join("|") + "#" + "\n";
 
 

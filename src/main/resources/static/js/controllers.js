@@ -205,7 +205,7 @@ appModule.controller("MainCtrl", ['$http', '$scope', function ($http, $scope) {
                         var beforeOffset = peptide.substring(0,offset);
                         var decreaseOffset = beforeOffset.length - beforeOffset.replace(self.modificationPattern, '').length;
 
-                        ptmLocal.push({"identifier": e.identifier, "offset": offset - decreaseOffset + start});
+                        ptmLocal.push({"identifier": e.identifier, "location": offset - decreaseOffset + start});
                     });
 
                 ptm.push(ptmLocal);

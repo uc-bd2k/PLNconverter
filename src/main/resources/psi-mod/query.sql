@@ -2,6 +2,7 @@
 # Dumps: ftp://ftp.ebi.ac.uk//pub/databases/ols/sqldump/
 # Version: ols-2015-10-18-2200
 # Result: mapping.csv
+#
 
 SELECT identifier,
 GROUP_CONCAT(annotation_str_value SEPARATOR ' ') AS Origin,

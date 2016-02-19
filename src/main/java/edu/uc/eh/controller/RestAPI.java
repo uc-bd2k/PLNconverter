@@ -50,4 +50,16 @@ public class RestAPI {
         return psiModService.getIdentifier(modification, 1.0);
     }
 
+    /**
+     * This endpoint is to test slashes in values of parameters submitted to REST API
+     * @param notation
+     * @return
+     */
+    @RequestMapping(value = "api/test/{notation}", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    String parseTest(@PathVariable String notation) {
+        log.info(notation);
+        return notation;
+    }
 }

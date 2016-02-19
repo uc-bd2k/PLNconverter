@@ -28,6 +28,10 @@ app.filter('inline', function () {
 
             var PTM = [];
 
+            // Configuration
+            var layerSep = ";";
+            var groupSep = ",";
+            var itemSep = "&";
 
             plnLocal.PTM.map(function (ptmGroup) {
                     //console.log(ptmGroup);
@@ -35,21 +39,36 @@ app.filter('inline', function () {
                     var ptmForHit = [];
 
                     for (var index = 0; index < ptmGroup.length; index++) {
-                        ptmForHit.push(ptmGroup[index].identifier+"@"+ptmGroup[index].location);
+                        ptmForHit.push(ptmGroup[index].identifier + "@" + ptmGroup[index].location);
                     }
 
-                    PTM.push(ptmForHit.join("&"));
+                    PTM.push(ptmForHit.join(itemSep));
                 }
             );
 
-            output = output +
-                "PLN=" + plnKey + ":" + plnValue + ";" +
-                "REF=" + refKey + ":" + refValue.join("|") + ";" +
-                "SYM=" + symKey + ":" + symValue.join("|") + ";" +
-                "DES=" + ";" +
-                "VAR=" + ";" +
-                "PTM=" + PTM.join("|") + "#" + "\n";
 
+
+            output = output +
+                "PLN=" + plnKey + ":" + plnValue + layerSep +
+                "REF=" + refKey + ":" + refValue.join(groupSep + refKey + ":") + layerSep +
+                "SYM=" + symKey + ":" + symValue.join(groupSep + symKey + ":") + layerSep +
+                "DES=" + layerSep +
+                "VAR=" + layerSep +
+                "PTM=" + PTM.join(groupSep) + "#" + "\n";
+
+            output = output + "\n";
+
+            plnKey = "ver1:InChl_like";
+            layerSep = "/";
+            groupSep = ";";
+
+            output = output +
+                "PLN=" + plnKey + layerSep +
+                "r;" + refKey + ":" + refValue.join(groupSep + refKey + ":") + layerSep +
+                "s;" + symKey + ":" + symValue.join(groupSep + symKey + ":") + layerSep +
+                "d;" + layerSep +
+                "v;" + layerSep +
+                "m;" + PTM.join(groupSep) + "#" + "\n\n";
 
         }
         return output;
